@@ -1,7 +1,7 @@
 package com.example.shoplist.domain
 
 data class ShopItem(
-    val name: String,
+    var name: String,
     val count: Int,
     var enabled:Boolean,
     var id: Int = NOT_DEFINED_ID
