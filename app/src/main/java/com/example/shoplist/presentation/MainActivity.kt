@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.shoplist.R
 import com.example.shoplist.databinding.ActivityMainBinding
 import com.example.shoplist.databinding.ItemShopEnabledBinding
@@ -22,18 +24,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         setupRecyclerView()
+        setupOnSwiped()
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.shopList.observe(this) {
-            shopItemAdapter.shopItemList = it
+            shopItemAdapter.submitList(it)
         }
     }
 
     private fun setupRecyclerView() {
         shopItemAdapter = ShopItemAdapter()
         with(binding) {
-
             with(rvShopItem) {
                 adapter = shopItemAdapter
                 recycledViewPool.setMaxRecycledViews(
@@ -46,9 +49,39 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+        setupLongClickListener()
+        setupClickListener()
+    }
 
+    private fun setupClickListener() {
+        shopItemAdapter.onShopItemClickListener = {
+            Log.d("ZZZZZ", it.toString())
+        }
+    }
 
+    private fun setupLongClickListener() {
+        shopItemAdapter.onShopItemLongClickListener = {
+            viewModel.editShowItem(it)
+        }
+    }
+
+    private fun setupOnSwiped() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewModel.removeShopItem(shopItemAdapter.currentList[viewHolder.adapterPosition])
+            }
+        }).attachToRecyclerView(binding.rvShopItem)
     }
 
 
 }
+
+

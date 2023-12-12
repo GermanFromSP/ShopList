@@ -16,7 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:paddingTop ="8dp"
+        android:paddingBottom ="8dp">
+        <CheckBox
+            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFC107"
+            android:checked="false"
+            android:clickable="false"
+            app:checkedState = "unchecked" />
 
         <TextView
             android:id="@+id/tvItemName"
@@ -24,7 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="18sp"
-            tools:text="Кошачий корм" />
+            tools:text="Кошачий корм"
+            android:fontFamily="@font/font_first"
+            />
 
         <TextView
             android:id="@+id/tvItemCount"
@@ -32,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:textSize="18sp"
+            android:fontFamily="@font/font_first"
             tools:text="3" />
 
     </LinearLayout>
